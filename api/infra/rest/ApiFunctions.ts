@@ -47,7 +47,7 @@ export class ApiFunctions {
             data,
         })
         if (options?.tokenRequired) {
-            contentHeaders['Authorization '] = options.token;
+            contentHeaders['Authorization'] = options.token;
         }
 
         if (options?.multipart) {
