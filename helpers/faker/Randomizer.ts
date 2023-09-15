@@ -36,6 +36,6 @@ export default class Randomizer {
 
     public get getRandomNumbers(): number {
         return faker.datatype.number({ min: 1, max: 1000 });
-    }
+    } 
 
 }
