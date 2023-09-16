@@ -1,5 +1,4 @@
 import { APIRequestContext } from "@playwright/test";
-import { type } from "os";
 
 export enum StatusCode {
     OK = 200,
@@ -10,11 +9,6 @@ export enum StatusCode {
     FORBIDDEN = 403,
     NOT_FOUND = 404,
     SERVER_ERROR = 500,
-}
-
-type Headers = {
-    'Content-Type': 'application/json',
-    'Accept'?: 'application/json',
 }
 
 export class ApiFunctions {
@@ -37,23 +31,19 @@ export class ApiFunctions {
         return response;
     }
 
-    public async put<T>(baseUrl = this.baseUrl, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string, multipart?: boolean, multipartKey?: string }) {
+    public async put<T>(baseUrl = this.baseUrl, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
         const contentHeaders = {
-            'Content-Type?': 'application/json',
-            'Accept?': 'application/json',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
         }
-        const response = this.apiRequestContext.put(baseUrl as string, {
+        const response = await this.apiRequestContext.put(baseUrl as string, {
             headers: contentHeaders,
             data,
         })
+
         if (options?.tokenRequired) {
             contentHeaders['Authorization'] = options.token;
         }
-
-        if (options?.multipart) {
-            delete contentHeaders['Content-Type']
-        }
-
         return response;
     }
 
@@ -62,14 +52,29 @@ export class ApiFunctions {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
-        const response = this.apiRequestContext.patch(baseUrl as string, {
+        const response = await this.apiRequestContext.patch(baseUrl as string, {
             headers: contentHeaders,
             data,
         })
         if (options?.tokenRequired) {
-            contentHeaders['Authorization '] = options.token;
+            contentHeaders['Authorization'] = options.token;
         }
+        return response;
+    }
 
+    public async delete<T>(url = this.baseUrl, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
+        const contentHeaders = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        }
+        const response = await this.apiRequestContext.delete(url as string, {
+            headers: contentHeaders,
+            data,
+        })
+
+        if (options?.tokenRequired) {
+            contentHeaders['Authorization'] = options.token;
+        }
 
         return response;
     }
