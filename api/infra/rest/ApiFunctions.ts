@@ -13,13 +13,12 @@ export enum StatusCode {
 }
 
 export class ApiFunctions {
-    private baseUrl = process.env.GORESTAPI_BASE_URL;
 
     constructor(protected apiRequestContext: APIRequestContext) {
         this.apiRequestContext = apiRequestContext;
     }
 
-    public async get(url: BaseUrl, params?: Record<string, string>) {
+    public async get(url: string, params?: Record<string, string>) {
         const response = await this.apiRequestContext.get(url.valueOf(), {
             headers: {
                 'Content-Type': 'application/json'
@@ -29,7 +28,7 @@ export class ApiFunctions {
         return response;
     }
 
-    public async post<T>(baseUrl: BaseUrl, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
+    public async post<T>(baseUrl: string, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
         const contentHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
