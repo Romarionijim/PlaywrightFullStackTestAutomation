@@ -19,7 +19,7 @@ export class ApiFunctions {
     }
 
     public async get(url: string, params?: Record<string, string>) {
-        const response = await this.apiRequestContext.get(url.valueOf(), {
+        const response = await this.apiRequestContext.get(url, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -33,13 +33,15 @@ export class ApiFunctions {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
-        const response = await this.apiRequestContext.put(baseUrl.valueOf(), {
+
+        if (options?.tokenRequired) {
+            contentHeaders['Authorization'] = `Bearer ${options.token}`;
+        }
+        const response = await this.apiRequestContext.post(baseUrl, {
             headers: contentHeaders,
             data,
         })
-        if (options?.tokenRequired) {
-            contentHeaders['Authorization'] = options.token;
-        }
+
         return response;
     }
 
@@ -48,43 +50,46 @@ export class ApiFunctions {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
-        const response = await this.apiRequestContext.put(baseUrl.valueOf(), {
+
+        if (options?.tokenRequired) {
+            contentHeaders['Authorization'] = `Bearer ${options.token}`;
+        }
+
+        const response = await this.apiRequestContext.put(baseUrl, {
             headers: contentHeaders,
             data,
         })
-        if (options?.tokenRequired) {
-            contentHeaders['Authorization'] = options.token;
-        }
+
         return response;
     }
 
-    public async patch<T>(baseUrl: BaseUrl, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
+    public async patch<T>(baseUrl: string, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
         const contentHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
-        const response = await this.apiRequestContext.patch(baseUrl.valueOf(), {
+        if (options?.tokenRequired) {
+            contentHeaders['Authorization'] = `Bearer ${options.token}`;
+        }
+        const response = await this.apiRequestContext.patch(baseUrl, {
             headers: contentHeaders,
             data,
         })
-        if (options?.tokenRequired) {
-            contentHeaders['Authorization'] = options.token;
-        }
+
         return response;
     }
 
-    public async delete<T>(url: BaseUrl, data: { [key: string]: T }, options?: { tokenRequired?: boolean, token?: string }) {
+    public async delete<T>(url: string, options?: { tokenRequired?: boolean, token?: string }) {
         const contentHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
-        const response = await this.apiRequestContext.delete(url.valueOf(), {
-            headers: contentHeaders,
-            data,
-        })
         if (options?.tokenRequired) {
-            contentHeaders['Authorization'] = options.token;
+            contentHeaders['Authorization'] = `Bearer ${options.token}`;
         }
+        const response = await this.apiRequestContext.delete(url, {
+            headers: contentHeaders,
+        })
         return response;
     }
 }
