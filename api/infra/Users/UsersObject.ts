@@ -151,5 +151,4 @@ export class UsersObject extends ApiFunctions {
             throw new Error('the email domain and/or extension are undefined');
         }
     }
-
 }

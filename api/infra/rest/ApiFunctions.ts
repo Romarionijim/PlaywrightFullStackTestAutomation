@@ -79,7 +79,7 @@ export class ApiFunctions {
         return response;
     }
 
-    public async delete<T>(url: string, options?: { tokenRequired?: boolean, token?: string }) {
+    public async delete(url: string, options?: { tokenRequired?: boolean, token?: string }) {
         const contentHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

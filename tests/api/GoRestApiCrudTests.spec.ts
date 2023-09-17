@@ -14,7 +14,7 @@ test.describe('api crud test for gorestapi API endpoints', async () => {
     })
 
     test('gender equality @GOREST_API', async () => {
-        await test.step('get both male and female genders count and make them even if one is geater than the other', async () => {
+        await test.step('get both male and female genders count and make them even if one is greater than the other', async () => {
             const res = await usersObject.getGenderCountAndMakeGendersEven();
             expect(res?.status()).toBe(StatusCode.CREATED);
             const femaleCount = await usersObject.countFemaleGender();
