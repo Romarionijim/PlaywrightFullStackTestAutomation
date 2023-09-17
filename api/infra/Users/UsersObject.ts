@@ -111,11 +111,27 @@ export class UsersObject extends ApiFunctions {
         return response;
     }
 
-    public async getDesiredEmailExtension() {
-        const extensionModification = await this.modifyEmailExtension();
-        const responseJson: IUser[] = await extensionModification?.json();
-        const response = responseJson.forEach(user => user.email?.endsWith('.co.il'));
-        return response;
+    private async getDesiredEmailExtension() {
+        const users = await this.getUsers();
+        const usersJson: IUser[] = await users.json();
+        let emailExtensions: string[] = [];
+        for (let el of usersJson) {
+            if (el.email !== undefined) {
+                const userEmail = await this.extractEmailExtension(el.email!);
+                emailExtensions.push(userEmail!);
+            }
+        }
+        return emailExtensions;
+    }
+
+    public async validateEmailExtensions() {
+        const emailExtensions = await this.getDesiredEmailExtension();
+        for (let extension of emailExtensions) {
+            if (extension !== '.co.il') {
+                return false;
+            }
+        }
+        return true;
     }
 
     private async extractEmailExtension(email: string) {

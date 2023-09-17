@@ -36,7 +36,7 @@ test.describe('api crud test for gorestapi API endpoints', async () => {
         await test.step('get each email and check if it ends with .co.il - if not replace each email extension with .co.il', async () => {
             const res = await usersObject.modifyEmailExtension();
             expect(res?.status()).toBe(StatusCode.OK);
-            const coilExtension = await usersObject.getDesiredEmailExtension();
+            const coilExtension = await usersObject.validateEmailExtensions();
             expect(coilExtension).toBe(true);
         })
     })
